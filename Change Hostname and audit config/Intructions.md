@@ -4,17 +4,16 @@
 [defaults]
 host_key_checking = false
 ```
-3. Enter this command
-`export ANSIBLE_CONFIG=./ansible.cfg`
+3. Run command in the folder: `export ANSIBLE_CONFIG=./ansible.cfg`
 4. Create / Transfer `change_audit_conf_and_hostname.yml` into the folder
 ```yml
 - hosts: WA14
   become: yes
   tasks:
-  - name: change config for auditd.conf
-    shell: "sudo sed -i -e '/max_log_file_action/s/keep_logs/rotate/g' -e '/space_left_action/s/email/syslog/g' -e '/admin_space_left_action/s/halt/syslog/g' /etc/audit/auditd.conf"
   - name: delete old audit logs
     shell: "sudo rm -r /var/log/audit/audit.log.*"
+  - name: change config for auditd.conf
+    shell: "sudo sed -i -e '/max_log_file_action/s/keep_logs/rotate/g' -e '/space_left_action/s/email/syslog/g' -e '/admin_space_left_action/s/halt/syslog/g' /etc/audit/auditd.conf"
   - name: delete var tmp
     shell: "sudo rm -r /var/tmp/aide.cron.daily.old*"
   - name: change hostname
@@ -30,14 +29,23 @@ ansible_user=xxxx
 10.x.x.x:xxxx new_hostname=xxx_xxx_WA14Bxx
 10.x.x.x:xxxx new_hostname=xxx_xxx_WA14Bxx
 ```
-6. Run `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml` inside the folder
-7. Enter the superadmin password **twice**
-8. Wait for the reporting
+6. Check the following before running the command:
+    1. Check the `hosts: XXXX` in `change_audit_conf_and_hostname.yml` is the correct group of hosts E.g. `hosts: WA19`
+    2. Check that the group exsists in the `inventory.ini` E.g. 
+        ```ini
+        [WA19]
+        10.x.x.x:xxxx new_hostname=xxx_xxx_WA19Bxx
+        10.x.x.x:xxxx new_hostname=xxx_xxx_WA19Bxx
+        ```
+7. Run command in folder: `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml` inside the folder
+8. Enter the superadmin password **twice**
+9. Wait for the reporting
 
 ## Technical Knowledge
 In the `inventory.ini` the devices is separated by `[XXXX]` this is the Wards of each devices.
 
-The script will do 3 things.
+The script will do 4 things.
 1. Cleanup the audit logs
 2. Change the audit config
 3. Cleanup the /var/tmp folder 
+4. Change the hostname
