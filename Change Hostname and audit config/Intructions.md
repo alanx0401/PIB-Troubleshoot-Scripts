@@ -3,6 +3,7 @@
 ```
 [defaults]
 host_key_checking = false
+inventory = inventory.ini
 ```
 3. Run command in the folder: `export ANSIBLE_CONFIG=./ansible.cfg`
 4. Create / Transfer `change_audit_conf_and_hostname.yml` into the folder
