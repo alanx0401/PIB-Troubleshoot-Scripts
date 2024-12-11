@@ -1,0 +1,16 @@
+# ansible-playbook apt-update.yml -i inventory.ini -vvv
+# host file is at ~/hosts  
+# default is at /etc/ansible/hosts
+# export ANSIBLE_HOST_KEY_CHECKING=False && ansible-playbook apt-update.yml
+# ansible-playbook apt-update.yml -i inventory.ini
+- hosts: WA14
+  become: yes
+  tasks:
+  - name: delete old audit logs
+    shell: "sudo rm -r /var/log/audit/audit.log.*"
+  - name: change config for auditd.conf
+    shell: "sudo sed -i -e '/max_log_file_action/s/keep_logs/rotate/g' -e '/space_left_action/s/email/syslog/g' -e '/admin_space_left_action/s/halt/syslog/g' /etc/audit/auditd.conf"
+  - name: delete var tmp
+    shell: "sudo rm -r /var/tmp/aide.cron.daily.old*"
+  - name: change hostname
+    shell: hostnamectl set-hostname {{ hostvars[inventory_hostname].new_hostname }}
