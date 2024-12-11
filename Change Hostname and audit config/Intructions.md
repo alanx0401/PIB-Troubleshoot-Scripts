@@ -1,11 +1,12 @@
-1. Create / Transfer `ansible.cfg`
+1. Create a folder
+2. Create / Transfer `ansible.cfg` into the folder
 ```
 [defaults]
 host_key_checking = false
 ```
-2. Enter this command
+3. Enter this command
 `export ANSIBLE_CONFIG=./ansible.cfg`
-3. Create / Transfer `change_audit_conf_and_hostname.yml`
+4. Create / Transfer `change_audit_conf_and_hostname.yml` into the folder
 ```yml
 - hosts: WA14
   become: yes
@@ -21,7 +22,7 @@ host_key_checking = false
 ```
 **Note: change `hosts: WA14` to whichever group of devices you want to run on. E.g. `hosts: WA15`**
 
-3. Transfer `inventory.ini` it should look something like below:
+5. Transfer `inventory.ini` into the folder. It should look something like below:
 ```ini
 [all:vars]
 ansible_user=xxxx
@@ -29,9 +30,9 @@ ansible_user=xxxx
 10.x.x.x:xxxx new_hostname=xxx_xxx_WA14Bxx
 10.x.x.x:xxxx new_hostname=xxx_xxx_WA14Bxx
 ```
-4. Run `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml`
-5. Enter the superadmin password **twice**
-6. wait for the reporting
+6. Run `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml` inside the folder
+7. Enter the superadmin password **twice**
+8. Wait for the reporting
 
 ## Technical Knowledge
 In the `inventory.ini` the devices is separated by `[XXXX]` this is the Wards of each devices.
