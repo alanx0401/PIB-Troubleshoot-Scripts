@@ -37,7 +37,7 @@ ansible_user=xxxx
         10.x.x.x:xxxx new_hostname=xxx_xxx_WA19Bxx
         10.x.x.x:xxxx new_hostname=xxx_xxx_WA19Bxx
         ```
-7. Run command in folder: `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml` inside the folder
+7. Run command in folder: `ansible-playbook -Kk -i inventory.ini change_audit_conf_and_hostname.yml >> ansible_output.log` inside the folder
 8. Enter the superadmin password **twice**
 9. Wait for the reporting
 
