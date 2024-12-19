@@ -4,9 +4,12 @@
 3. Paste below code into the editor:
 
 ```sh
-#!  /bin/sh
+#!/bin/bash
+sleep 60
+interface=$(ifconfig | grep -o "^wlx\w*")
+echo "Interface is ${interface}."
 while true; do
-  if ifconfig wlxe4fac4f574a2 | grep -q "inet"; then
+  if ifconfig ${interface} | grep -q "inet"; then
     echo "all ok!"
   else
     nmcli n off
@@ -16,9 +19,6 @@ while true; do
   sleep 20
 done
 ```
-
-Note: run "ifconfig" and make sure the wifi dongle is named wlxe4fac4f574a2. Change the code if necessary
-
 4. Save and close with CTL+X then Y
 5. Run  "sudo chmod +x /etc/init.d/reconnect"
 6. Run "sudo crontab -e"
@@ -34,4 +34,5 @@ Note: run "ifconfig" and make sure the wifi dongle is named wlxe4fac4f574a2. Cha
     3. If you see " /bin/sh /etc/init.d/reconnect "  Then everything is working.
 
 ### Technical Explaination
+The script will sleep for 60s before running everything else
 The script will run ifconfig every 20s and see if there is valid ip addr on wifi dongle. If not it would turn the wifi off and on again and the cycle will repeat. The rest of the steps is to make sure the script will run on startup using cron
