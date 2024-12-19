@@ -1,7 +1,9 @@
-#!  /bin/sh
+#!/bin/bash
 sleep 60
+interface=$(ifconfig | grep -o "^wlx\w*")
+echo "Interface is ${interface}."
 while true; do
-  if ifconfig wlxe4fac4f574a2 | grep -q "inet"; then
+  if ifconfig ${interface} | grep -q "inet"; then
     echo "all ok!"
   else
     nmcli n off
